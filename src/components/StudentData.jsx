@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import * as XLSX from "xlsx";
@@ -18,6 +19,21 @@ function StudentData() {
       console.log(parsedData);
     };
   };
+
+  const addStudentDetails = async(req,res)=>{
+    try{
+
+      const response = await axios.post('http://localhost:4000/updates/add-students',{
+        students:data
+      });
+
+      
+      
+    }catch(e){
+      console.log(e);
+    }
+  }
+
   const handleFileUpload2 = (e) => {
     const reader = new FileReader();
     reader.readAsBinaryString(e.target.files[0]);

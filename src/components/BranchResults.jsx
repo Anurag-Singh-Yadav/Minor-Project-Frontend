@@ -3,19 +3,30 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import * as XLSX from "xlsx";
 
-function BranchResutls() {
+function BranchResults() {
   const { branch } = useParams();
   const [data, setData] = useState([]);
 
     const getData = async(subject) => {
         try{
-            const res = await axios.get('http://localhost:4000/admin/',{
-                branch,
-                subject
+            const res = await axios.post('http://localhost:4000/getresults/all-courses',{
+                branchCode:branch
             });
+            setData(res.data.data);
         }catch(e){
             console.log(e);
         }
+    }
+
+    const allotedResultSubjectWise = async(courseCode)=>{
+      try{
+          const res = await axios.post('https://localhost:4000/getresults/course-wise-allotment',{
+            courseCode
+          })
+          convertToJsonAndDownload(res.data.data);
+      }catch(e){
+        console.log(e);
+      }
     }
 
     const convertToJsonAndDownload = () => {
@@ -47,7 +58,9 @@ function BranchResutls() {
         <div className="flex justify-between items-center flex-wrap">
           {subOffer.map((item, index) => {
             return (
-              <div key={index} className="text-center py-2">
+              <div key={index} className="text-center py-2" onClick={()=>{
+                allotedResultSubjectWise(item.courseCode);
+              }}>
                   {item}
               </div>
             );
@@ -71,4 +84,4 @@ const subOffer = [
   "sub10",
 ];
 
-export default BranchResutls;
+export default BranchResults;

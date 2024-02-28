@@ -3,7 +3,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import StudentData from "./components/StudentData";
 import Results from "./components/Results";
-import BranchResutls from "./components/BranchResutls";
+import BranchResults from "./components/BranchResults";
 
 function App() {
   return (
@@ -12,9 +12,9 @@ function App() {
         <Navbar />
       </div>
       <Routes>
-        <Route path="/" element={<StudentData />} />
+        <Route path="/test" element={<StudentData />} />
         <Route path="/results" element={<Results />}></Route>
-        <Route path="/results/:branch" element={<BranchResutls />}></Route>
+        <Route path="/results/:branch" element={<BranchResults />}></Route>
       </Routes>
     </>
   );
