@@ -2,19 +2,20 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 function Results() {
-  // const [branch,setBranchData] = useState(null);
-  // const getBranches = async()=>{
-  //   try{
-  //     const res = await axios.post('http://localhost:4000/getresults/all-branches');
-  //     setBranchData(res.data.data);
-  //   }catch(e){
-  //     console.log(e);
-  //   }
-  // }
+  const [branch,setBranchData] = useState(null);
+  const getBranches = async()=>{
+    try{
+      const res = await axios.get('http://localhost:4000/get-results/all-branches');
+      setBranchData(res.data.data);
+      console.log(res);
+    }catch(e){
+      console.log(e);
+    }
+  }
 
-    // useEffect(()=>{
-    //   getBranches();
-    // },[])
+    useEffect(()=>{
+      getBranches();
+    },[])
 
   return (
     <div className="px-2">
@@ -25,7 +26,7 @@ function Results() {
             return (
               <div key={index} className="flex justify-center items-center min-h-10 shadow-[0_8px_30px_rgb(0,0,0,0.12)] bg-[#0369a0] text-white font-semibold py-2">
                 <Link to={`/results/${branch[index].branchCode}`}>
-                  {item}
+                  {item.branchCode}
                 </Link>
               </div>
             );
@@ -36,18 +37,5 @@ function Results() {
   );
 }
 
-const branch = [
-  "CSE",
-  "ECE",
-  "EEE",
-  "MECH",
-  "CIVIL",
-  "IT",
-  "CHEM",
-  "BIO",
-  "MATH",
-  "PHY",
-  "ENG",
-];
 
 export default Results;

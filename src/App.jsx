@@ -5,8 +5,11 @@ import StudentData from "./components/StudentData";
 import Results from "./components/Results";
 import BranchResults from "./components/BranchResults";
 import Home from "./components/Home";
+import { generateTestStudents } from "./assets/generateStudents";
+import { useEffect } from "react";
 
 function App() {
+
   return (
     <>
       <div className="hidden md:block">
