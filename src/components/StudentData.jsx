@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import * as XLSX from "xlsx";
+import { generateTestStudents } from "../assets/generateStudents";
 
 function StudentData() {
   const [data, setData] = useState([]);
@@ -20,19 +21,16 @@ function StudentData() {
     };
   };
 
-  const addStudentDetails = async(req,res)=>{
-    try{
-
-      const response = await axios.post('http://localhost:4000/updates/add-students',{
-        students:data
-      });
-
-      
-      
-    }catch(e){
-      console.log(e);
-    }
-  }
+  // const addStudentDetails = async(data)=>{
+  //   try{
+  //     const response = await axios.post('http://localhost:4000/updates/add-students',{
+  //       students:data
+  //     });
+  //     console.log(response);
+  //   }catch(e){
+  //     console.log(e);
+  //   }
+  // }
 
   const handleFileUpload2 = (e) => {
     const reader = new FileReader();
