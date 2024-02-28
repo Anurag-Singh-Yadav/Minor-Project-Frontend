@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import StudentData from "./components/StudentData";
 import Results from "./components/Results";
 import BranchResults from "./components/BranchResults";
+import Home from "./components/Home";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Navbar />
       </div>
       <Routes>
+        <Route path="/" element={<Home/>}></Route>
         <Route path="/test" element={<StudentData />} />
         <Route path="/results" element={<Results />}></Route>
         <Route path="/results/:branch" element={<BranchResults />}></Route>
