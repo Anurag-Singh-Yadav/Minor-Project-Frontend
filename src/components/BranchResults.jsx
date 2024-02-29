@@ -7,7 +7,7 @@ import { MdOutlineFileDownload } from "react-icons/md";
 function BranchResults() {
   const { branch } = useParams();
   const [data, setData] = useState(null);
-
+  const [loading, setLoading] = useState(false);
   const getData = async () => {
     try {
       const res = await axios.post(
@@ -25,6 +25,7 @@ function BranchResults() {
 
   const allotedResultSubjectWise = async (courseCode) => {
     try {
+      setLoading(true);
       const res = await axios.post(
         "http://localhost:4000/get-results/course-wise-allottment",
         {
@@ -34,8 +35,10 @@ function BranchResults() {
       console.log(res);
       downloadJSONToExcel(res.data.data.deAllotted , `DepartMent_Allottment_${courseCode}`);
       downloadJSONToExcel(res.data.data.oeAllotted , `Open_Allottment_${courseCode}`);
+      setLoading(false);
     } catch (e) {
       console.log(e);
+      setLoading(false);
     }
   };
 
@@ -93,7 +96,7 @@ function s2ab(s) {
               >
                 <span>{item.courseCode}</span>
                 <div
-                  className="flex justify-center cursor-pointer items-center gap-2"
+                  className={`flex justify-center cursor-pointer items-center gap-2 ${loading ? 'cursor-not-allowed' :'cursor-pointer'}`}
                   onClick={() => {
                     allotedResultSubjectWise(item.courseCode);
                   }}
