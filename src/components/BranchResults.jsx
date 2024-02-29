@@ -32,7 +32,7 @@ function BranchResults() {
         }
       );
       console.log(res);
-      downloadJSONToExcel(res.data.data , `Elective_Allottment_${courseCode}`);
+      convertToJsonAndDownload(res.data.data , `Elective_Allottment_${courseCode}`);
     } catch (e) {
       console.log(e);
     }
@@ -41,40 +41,6 @@ function BranchResults() {
   useEffect(() => {
     getData(branch);
   }, []);
-
-  function downloadJSONToExcel(jsonData, filename) {
-    // Convert JSON to workbook
-    var wb = XLSX.utils.book_new();
-    var ws = XLSX.utils.json_to_sheet(jsonData);
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
-    // Convert workbook to binary string
-    var wbout = XLSX.write(wb, { type: 'binary', bookType: 'xlsx' });
-
-    // Create a Blob from the binary string
-    var blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
-
-    // Create a URL from the Blob
-    var url = window.URL.createObjectURL(blob);
-
-    // Create a link and click it to initiate the download
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = filename + '.xlsx';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-    // Free memory
-    window.URL.revokeObjectURL(url);
-}
-
-function s2ab(s) {
-    var buf = new ArrayBuffer(s.length);
-    var view = new Uint8Array(buf);
-    for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
-    return buf;
-}
 
   const convertToJsonAndDownload = (data) => {
     const ws = XLSX.utils.json_to_sheet(data);
@@ -145,3 +111,5 @@ function s2ab(s) {
 // ];
 
 export default BranchResults;
+
+
