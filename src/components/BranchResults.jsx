@@ -8,7 +8,7 @@ function BranchResults() {
   const { branch } = useParams();
   const [data, setData] = useState(null);
 
-  const getData = async (subject) => {
+  const getData = async () => {
     try {
       const res = await axios.post(
         "http://localhost:4000/get-results/all-courses",
@@ -32,7 +32,8 @@ function BranchResults() {
         }
       );
       console.log(res);
-      downloadJSONToExcel(res.data.data , `Elective_Allottment_${courseCode}`);
+      downloadJSONToExcel(res.data.data.deAllotted , `DepartMent_Allottment_${courseCode}`);
+      downloadJSONToExcel(res.data.data.oeAllotted , `Open_Allottment_${courseCode}`);
     } catch (e) {
       console.log(e);
     }
@@ -76,28 +77,6 @@ function s2ab(s) {
     return buf;
 }
 
-  const convertToJsonAndDownload = (data) => {
-    const ws = XLSX.utils.json_to_sheet(data);
-
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet 1");
-
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-
-    const blob = new Blob([excelBuffer], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
-    });
-
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "excel_data.xlsx";
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    document.body.removeChild(link);
-  };
   return (
     <div className="px-2">
       <div className="text-center text-xl sm:text-2xl font-medium md:text-3xl py-4">
