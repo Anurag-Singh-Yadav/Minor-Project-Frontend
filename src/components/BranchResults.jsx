@@ -34,7 +34,7 @@ function BranchResults() {
       );
       console.log(res);
       downloadJSONToExcel(res.data.data.deAllotted , `DepartMent_Allottment_${courseCode}`);
-      downloadJSONToExcel(res.data.data.oeAllotted , `Open_Allottment_${courseCode}`);
+      downloadJSONToExcel(res.data.data.oeAllotted , `General_Elective_Allottment_${courseCode}`);
       setLoading(false);
     } catch (e) {
       console.log(e);

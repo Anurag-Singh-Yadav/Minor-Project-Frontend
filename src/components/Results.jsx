@@ -29,7 +29,7 @@ function Results() {
         }
       );
       console.log(res);
-      downloadJSONToExcel(res.data.data,`Open_Allottment_${branch }`)
+      downloadJSONToExcel(res.data.data,`Branch_Wise_Elective_Allottment_${branch }`)
     } catch (e) {
       console.log(e);
     }
