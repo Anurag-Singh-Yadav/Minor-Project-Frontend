@@ -8,7 +8,7 @@ function BranchResults() {
   const { branch } = useParams();
   const [data, setData] = useState(null);
 
-  const getData = async (subject) => {
+  const getData = async () => {
     try {
       const res = await axios.post(
         "http://localhost:4000/get-results/all-courses",
@@ -32,7 +32,8 @@ function BranchResults() {
         }
       );
       console.log(res);
-      convertToJsonAndDownload(res.data.data , `Elective_Allottment_${courseCode}`);
+      downloadJSONToExcel(res.data.data.deAllotted , `DepartMent_Allottment_${courseCode}`);
+      downloadJSONToExcel(res.data.data.oeAllotted , `Open_Allottment_${courseCode}`);
     } catch (e) {
       console.log(e);
     }
@@ -42,28 +43,40 @@ function BranchResults() {
     getData(branch);
   }, []);
 
-  const convertToJsonAndDownload = (data) => {
-    const ws = XLSX.utils.json_to_sheet(data);
+  function downloadJSONToExcel(jsonData, filename) {
+    // Convert JSON to workbook
+    var wb = XLSX.utils.book_new();
+    var ws = XLSX.utils.json_to_sheet(jsonData);
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet 1");
+    // Convert workbook to binary string
+    var wbout = XLSX.write(wb, { type: 'binary', bookType: 'xlsx' });
 
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    // Create a Blob from the binary string
+    var blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
 
-    const blob = new Blob([excelBuffer], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
-    });
+    // Create a URL from the Blob
+    var url = window.URL.createObjectURL(blob);
 
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "excel_data.xlsx";
+    // Create a link and click it to initiate the download
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename + '.xlsx';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 
-    document.body.appendChild(link);
+    // Free memory
+    window.URL.revokeObjectURL(url);
+}
 
-    link.click();
+function s2ab(s) {
+    var buf = new ArrayBuffer(s.length);
+    var view = new Uint8Array(buf);
+    for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+    return buf;
+}
 
-    document.body.removeChild(link);
-  };
   return (
     <div className="px-2">
       <div className="text-center text-xl sm:text-2xl font-medium md:text-3xl py-4">
@@ -111,5 +124,3 @@ function BranchResults() {
 // ];
 
 export default BranchResults;
-
-
